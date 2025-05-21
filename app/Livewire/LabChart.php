@@ -18,7 +18,8 @@ class LabChart extends Component
         $this->initChart();
     }
 
-    public function initChart(){
+    public function initChart()
+    {
         $this->dispatch('updateLabChart', labels: $this->labels, values: $this->values, chartType: $this->chartType);
     }
 

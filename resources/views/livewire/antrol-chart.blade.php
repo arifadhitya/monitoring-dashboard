@@ -1,5 +1,4 @@
 <div class="bg-white p-4 rounded-xl" style="height: 400px;" wire:init="initChart">
-    <h2 class="text-lg font-semibold mb-2">Antrian Online MJKN</h2>
     <canvas id="lineAntrolChart" wire:ignore style="height: 80%; width: 80%;"></canvas>   
 </div>
   

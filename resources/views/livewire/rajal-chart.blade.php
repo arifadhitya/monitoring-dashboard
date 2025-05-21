@@ -40,7 +40,6 @@
         });
     }
 
-    // Setup listener untuk update chart pada navigasi Livewire
     function setupRajalChartListeners() {
         Livewire.on('updateRajalChart', (data) => {
             setTimeout(() => {
@@ -49,10 +48,8 @@
         });
     }
 
-    // Inisialisasi listener chart pada event livewire:init
     document.addEventListener('livewire:init', setupRajalChartListeners);
 
-    // Reset chart instance pada navigasi Livewire (SPA mode)
     document.addEventListener('livewire:navigated', () => {
         Livewire.dispatch('initChart');
         rajalChartInstance = null; // Reset instance

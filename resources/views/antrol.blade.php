@@ -1,37 +1,19 @@
-<x-layouts.app title="Rawat Inap">
+<x-layouts.app title="Rawat Jalan">
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
-        <div class="flex items-center justify-between">
-            <div>
-                <flux:breadcrumbs>
-                    <flux:breadcrumbs.item href="#" icon="home" />
-                    <flux:breadcrumbs.item icon="ellipsis-horizontal" />
-                    <flux:breadcrumbs.item>Post</flux:breadcrumbs.item>
-                </flux:breadcrumbs>
+        
+        <div class="grid rounded-xl p-4 gap-4 border border-neutral-200 dark:border-neutral-700">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="rounded-xl border p-4 border-neutral-200 dark:border-neutral-700 md:col-span-2 h-full">
+                    @livewire('antrol-chart')
+                </div>
+                <div class="rounded-xl border p-4 border-neutral-200 dark:border-neutral-700 h-full">
+                    @livewire('antrol-today')
+                </div>
             </div>
-            <div class="bg-white dark:bg-neutral-800 p-4 rounded-lg show">
-                @livewire('date-filter')
-            </div>
-        </div>
-        <div class="relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-            @livewire('antrol-chart')
-            <div class="mt-4 p-4 rounded-xl grid auto-rows-min gap-4 md:grid-cols-3">
-                <div class="flex flex-col space-y-4 relative aspect-video overflow-hidden rounded-xl border p-3 gap-y-4 border-neutral-200 dark:border-neutral-700">
-                    <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
-                    {{-- <span class="font-bold">Stat Pasien Poliklinik</span>
-                    @livewire('poli-stats') --}}
-                </div>
-                <div class="flex flex-col space-y-4 relative aspect-video overflow-hidden rounded-xl border p-3 gap-y-4 border-neutral-200 dark:border-neutral-700">
-                    <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
-                    {{-- <span class="font-bold">Stat Pasien IGD</span>
-                    @livewire('igd-stats') --}}
-                    
-                </div>
-                <div class="flex flex-col space-y-4 relative aspect-video overflow-hidden rounded-xl border p-3 gap-y-4 border-neutral-200 dark:border-neutral-700">
-                    <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
-                    {{-- <span class="font-bold">Stat Pasien Hemodialisa</span>
-                    @livewire('hemo-stats') --}}
-                </div>
+            <div class="grid grid-cols-1 border rounded-xl">
+                
             </div>
         </div>
+        
     </div>     
 </x-layouts.app>

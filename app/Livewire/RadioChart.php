@@ -12,39 +12,38 @@ class RadioChart extends Component
     public $values = [];
     public $chartType = "bar";
 
-    public $startDate, $endDate;
-    protected $listeners = ['updateDate' => 'updateDate', 'initChart' => 'initChart'];
-    public $chartInitialized = false;
-
-    public function mount(){
-        $this->startDate = Carbon::now()->format('Y-m-d');
-        $this->endDate = Carbon::now()->format('Y-m-d');
+    public function mount()
+    {
         $this->fetchData();
+        $this->initChart();
     }
 
     public function initChart(){
         $this->dispatch('updateRadioChart', labels: $this->labels, values: $this->values, chartType: $this->chartType);
     }
 
-    public function updateDate($start, $end){
-        $this->startDate = $start;
-        $this->endDate = $end;
-        $this->fetchData();
-        $this->initChart();
-    }
-
     public function fetchData(){
-        // Ambil semua tanggal dalam range
-        $dates = collect();
-        $period = Carbon::parse($this->startDate)->daysUntil($this->endDate);
-        foreach ($period as $date) {
-            $dates->push($date->format('Y-m-d'));
-        }
-        $this->labels = $dates->toArray();
+        $end = Carbon::now()->startOfMonth();
+        $start = (clone $end)->subMonths(11);
 
-        foreach($dates as $date){
+        $period = collect();
+        $current = $start->copy();
+
+        while ($current <= $end) {
+            $period->push($current->copy());
+            $current->addMonth();
+        }
+
+        $this->labels = $period->map(fn ($date) => $date->format('M Y'))->toArray();
+
+        $radioCount = [];
+
+        foreach($period as $month){
+            $startOfMonth = $month->copy()->startOfMonth()->toDateString();
+            $endOfMonth = $month->copy()->endOfMonth()->toDateString();
+            
             $count=DB::table('permintaan_radiologi')
-                        ->whereDate('permintaan_radiologi.tgl_permintaan', $date)
+                        ->whereBetween('permintaan_radiologi.tgl_permintaan', [$startOfMonth, $endOfMonth])
                         ->count();
             $radioCount[] = $count;
         }
@@ -52,20 +51,9 @@ class RadioChart extends Component
         $this->values = [
             'RadioCount' => $radioCount,
         ];
-
-        if ($this->startDate === $this->endDate) {
-            $this->chartType = 'bar';
-        } else {
-            $this->chartType = 'line';
-        }
     }
 
     public function render(){
-        if (!$this->chartInitialized) {
-            $this->initChart();
-            $this->chartInitialized = true;
-        }
-
         return view('livewire.radio-chart');
     }
 }

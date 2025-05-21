@@ -12,12 +12,7 @@ class AntrolChart extends Component
     public $values = [];
     public $chartType = "bar";
 
-    public $startDate, $endDate;
-    protected $listeners = ['updateDate' => 'updateDate'];
-
     public function mount(){
-        $this->startDate = Carbon::now()->format('Y-m-d');
-        $this->endDate = Carbon::now()->format('Y-m-d');
         $this->fetchData();
         $this->initChart();
     }
@@ -26,45 +21,30 @@ class AntrolChart extends Component
         $this->dispatch('updateAntrolChart', labels: $this->labels, values: $this->values, chartType: $this->chartType);
     }
 
-    public function updateDate($start, $end){
-        $this->startDate = $start;
-        $this->endDate = $end;
-        $this->fetchData();
-        $this->initChart(); 
-    }
-
-
     public function fetchData(){
-        // Ambil semua tanggal dalam range
-        $dates = collect();
-        $period = Carbon::parse($this->startDate)->daysUntil($this->endDate);
-        foreach ($period as $date) {
-            $dates->push($date->format('Y-m-d'));
-        }
-        $this->labels = $dates->toArray();
+        $dateNow = Carbon::now()->format('Y-m-d');
         $antrolCheckinCount = [];
         $antrolBatalCount = [];
+        $antrolBelumCount = [];
 
-        foreach($dates as $date){
-            $checkinCount=DB::table('referensi_mobilejkn_bpjs')
+        $checkinCount=DB::table('referensi_mobilejkn_bpjs')
                         ->where('referensi_mobilejkn_bpjs.status','Checkin')
-                        ->whereDate('referensi_mobilejkn_bpjs.tanggalperiksa', $date)
+                        ->whereDate('referensi_mobilejkn_bpjs.tanggalperiksa', $dateNow)
                         ->count();
 
-            $batalCount=DB::table('referensi_mobilejkn_bpjs')
+        $batalCount=DB::table('referensi_mobilejkn_bpjs')
                         ->where('referensi_mobilejkn_bpjs.status','Batal')
-                        ->whereDate('referensi_mobilejkn_bpjs.tanggalperiksa', $date)
+                        ->whereDate('referensi_mobilejkn_bpjs.tanggalperiksa', $dateNow)
                         ->count();
 
-            $belumCount=DB::table('referensi_mobilejkn_bpjs')
+        $belumCount=DB::table('referensi_mobilejkn_bpjs')
                         ->where('referensi_mobilejkn_bpjs.status','Belum')
-                        ->whereDate('referensi_mobilejkn_bpjs.tanggalperiksa', $date)
+                        ->whereDate('referensi_mobilejkn_bpjs.tanggalperiksa', $dateNow)
                         ->count();
 
-            $antrolCheckinCount[] = $checkinCount;
-            $antrolBatalCount[] = $batalCount;
-            $antrolBelumCount[] = $belumCount;
-        }
+        $antrolCheckinCount[] = $checkinCount;
+        $antrolBatalCount[] = $batalCount;
+        $antrolBelumCount[] = $belumCount;
 
         $this->values = [
             'Checkin' => $antrolCheckinCount,
@@ -72,7 +52,7 @@ class AntrolChart extends Component
             'Belum' => $antrolBelumCount,
         ];
 
-        $this->chartType = $this->startDate === $this->endDate ? 'bar' : 'line';
+        $this->labels = ['MJKN Hari Ini'];
     }
 
     public function render(){

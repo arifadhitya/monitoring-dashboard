@@ -7,11 +7,11 @@
                     @livewire('lab-chart')
                 </div>
                 <div class="rounded-xl border p-4 border-neutral-200 dark:border-neutral-700 h-full">
-                    @livewire('ranap-today')
+                    @livewire('lab-today')
                 </div>
             </div>
             <div class="grid grid-cols-1 border rounded-xl">
-                @livewire('ranap-list')
+                @livewire('lab-list')
             </div>
         </div>
         

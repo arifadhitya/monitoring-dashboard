@@ -4,7 +4,7 @@
                 <div class="bg-sky-500 rounded-xl p-2">
                     <flux:icon.users class="size-8 text-neutral-50"/>
                 </div>
-                <strong class="font-bold text-2xl">Rawat jalan hari ini</strong>
+                <strong class="font-bold text-2xl">Radiologi hari ini</strong>
             </div>
             <div class="flex flex-col gap-4">
                 <div class="flex items-center gap-4">
@@ -29,9 +29,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-col">
-                    <strong class="text-xl font-bold">Pasien via MJKN</strong>
-                    <span class="text-xl">{{ $jumlahAntrol }} Checkin</span>
+                <div class="flex flex-row gap-5">
+                    <div class="flex flex-col">
+                        <strong class="text-xl font-bold">Pasien Ranap</strong>
+                        <span class="text-xl">{{ $jumlahRanap }} Permintaan</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <strong class="text-xl font-bold">Pasien Ralan</strong>
+                        <span class="text-xl">{{ $jumlahRalan }} Permintaan</span>
+                    </div>
                 </div>
             </div>
             <div class="grid grid-cols-3 border rounded-2xl p-4">
